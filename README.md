@@ -1,124 +1,74 @@
-# **Reppy: Project & Feature Specification**
+# **Reppy: Your Personal AI Fitness Companion**
 
-Version: 1.0  
-Date: July 18, 2025
+## **The Reppy Philosophy: A Plan That Lives and Breathes With You**
 
-## **Overview**
+Imagine a personal trainer who is available 24/7, knows your goals, understands your limits, and adapts your fitness plan not just week-to-week, but day-to-day. This is Reppy.
 
-Reppy is an AI-powered personal trainer designed to provide users with genuinely personalized, adaptive, and conversational fitness coaching. The system is built on a modern, three-part architecture consisting of a React Native frontend, an Express primary backend, and a dedicated FastAPI AI server that leverages a Retrieval-Augmented Generation (RAG) engine. This document outlines the specific features and technical responsibilities of each component.
+Reppy is more than just a fitness app; it's an intelligent companion designed to remove every obstacle between you and your health goals. Our core philosophy is that your fitness plan shouldn't be a static document you struggle to follow. It should be a living, breathing guide that evolves with you. Whether you're feeling energetic, tired, or just need a change, Reppy listens, understands, and adapts, ensuring every workout is effective, engaging, and perfectly suited for you.
 
-## **1\. Frontend (React Native App)**
+## **Your Fitness Journey with Reppy**
 
-The frontend is the user's sole interaction point with the Reppy ecosystem. It is responsible for delivering a seamless, intuitive, and engaging user experience.
+From the moment you start, every part of the Reppy experience is designed to be seamless, motivating, and centered around you.
 
-### **1.1. User Authentication & Onboarding**
+### **A Tailor-Made Beginning**
 
-* **Sign-Up/Login:** Users can create an account via email/password or social providers (Google/Apple). The app will manage token-based sessions for persistent login.  
-* **Onboarding Questionnaire:** Upon first login, the user is guided through a multi-step onboarding process to collect critical data for initial routine generation:  
-  * Fitness Goal (e.g., Bulking, Cutting, Endurance)  
-  * Experience Level (Beginner, Intermediate, Advanced)  
-  * Weekly Availability (Number of days)  
-  * Personal Profile (Age, Sex, Height, Weight)  
-  * Available Gym Equipment (Multi-select list)  
-* **Initial Routine Generation:** After onboarding, the app sends the collected data to the backend to trigger the generation of the user's first weekly routine.
+Your journey begins with a simple, friendly conversation. Reppy will ask you about your aspirations—whether you want to build muscle, improve endurance, or simply feel healthier. You'll share your schedule, what equipment you have access to (even if it's none at all\!), and a little about yourself.
 
-### **1.2. The AI Coach (Chat Interface)**
+There are no confusing menus or generic plans to choose from. Based on this initial chat, Reppy instantly crafts your very first, completely unique weekly workout plan. This isn't a template; it's Version 1 of your personal fitness journey, designed exclusively for you.
 
-* **Primary Interaction Model:** The core of the app is a chat interface where the user interacts with their AI coach, "Reppy."  
-* **Conversational Commands:** Users can send natural language messages to:  
-  * Request a new or updated routine ("Generate a new plan for next week").  
-  * Provide unstructured feedback ("My shoulder felt sore during the overhead press").  
-  * Ask fitness-related questions ("What's the difference between a pyramid set and a drop set?").  
-  * Engage in small talk.  
-* **Streaming Responses:** The app will handle Server-Sent Events (SSE) to display the AI's responses token-by-token for a real-time chat feel.
+### **Meet Your AI Coach**
 
-### **1.3. Routine Execution & Tracking**
+The heart of Reppy is your ongoing conversation with your AI coach. This is where the magic happens. You can talk to Reppy just like you would a human trainer:
 
-* **Calendar View:** A weekly calendar displays the user's scheduled workouts and rest days.  
-* **Daily Workout Screen:** Tapping a workout day opens a detailed view:  
-  * **Workout Title:** e.g., "Push Day \- Chest & Triceps".  
-  * **Exercise List:** An ordered list of exercises for the day.  
-  * **Exercise Details:** Each exercise includes its name, set type (e.g., Pyramid), and a detailed breakdown of sets, reps, weight, and rest times.  
-  * **Embedded Demos:** A link or embedded player (YouTube/GIF) shows how to perform the exercise.  
-* **Active Workout Mode:** A "Start Workout" button initiates a tracker with timers for sets and rest periods, allowing users to log their completed reps and weight for each set.
+* **Feeling ambitious?** Say, "I want to add an extra day of cardio next week."  
+* **Feeling sore?** "My legs are really tired today, can we do something lighter?"  
+* **Curious?** "What's the best way to warm up for a heavy lift?"  
+* **Need a change?** "I'm getting bored of squats, can you suggest an alternative?"
 
-### **1.4. Structured Feedback System**
+Reppy understands and responds in real-time, adjusting your plan, offering encouragement, and answering your questions instantly.
 
-* **Post-Workout Prompts:** After completing a workout, the app will present simple UI elements (e.g., 👍/👎 buttons) for key exercises to gather explicit, structured feedback.  
-* **Targeted API Calls:** This interaction will trigger a direct API call to the backend to log this structured feedback, bypassing the AI interpretation layer.
+### **Workout with Confidence**
 
-### **1.5. Profile and Settings**
+When it's time to train, Reppy provides a clear, focused guide for your day's session. Each workout screen is designed to eliminate guesswork, showing you exactly what to do, how to do it, and for how long.
 
-* **User Profile:** A screen where users can view and edit their personal information, fitness goals, and equipment list.  
-* **Preferences:** Users can manage settings such as unit system (kg/lbs) and push notification preferences.
+You'll see a simple, ordered list of exercises, complete with video demonstrations so you can perfect your form. As you move through your workout, Reppy tracks your sets, reps, and rest times, letting you focus on your effort, not on the logistics.
 
-### **1.6. Push Notifications**
+### **A Smarter Coach Every Day**
 
-* The app will handle push notifications for:  
-  * Daily workout reminders.  
-  * Encouragement to maintain a workout streak.  
-  * Proactive check-in messages from the AI coach.
+Reppy is designed to learn. After a workout, you can give simple feedback with a tap—a thumbs-up on an exercise you loved, or a thumbs-down on one that felt off.
 
-## **2\. Backend (Express API Server)**
+Combine this with your conversational feedback, and Reppy gets progressively smarter. It learns which exercises you enjoy, where you're hitting plateaus, and how to best motivate you. This means Version 5 of your workout plan will be far more attuned to you than Version 1, creating a truly personalized and effective long-term fitness partnership.
 
-The Express server is the central API gateway and the "System of Record." It handles all user-facing requests, manages the primary database, and acts as a secure proxy to the AI server.
+## **The Technology Behind Reppy**
 
-### **2.1. Core Responsibilities**
+Reppy's seamless experience is powered by a modern, three-part architecture designed for security, scalability, and intelligence.
 
-* **Primary API Gateway:** Exposes all public-facing REST endpoints.  
-* **User & Auth Management:** Handles all user registration, login, and session token management.  
-* **Database Owner (PostgreSQL):** It is the only component authorized to perform CRUD operations on the PostgreSQL database.  
-* **Data Aggregator & Proxy:** Gathers necessary data from PostgreSQL before making secure, server-to-server requests to the FastAPI AI Engine.
+### **System Architecture Diagram**
+```text
++------------------------+      (HTTPS Request)      +-------------------------+      (Secure Server-to-Server)      +-----------------------+
+|                        | ------------------------> |                         | -----------------------------------> |                       |
+|  React Native Frontend |                           |  Express API Server     |                                      |  FastAPI AI Server    |
+|  (User Interface)      | <------------------------ |  (Primary Backend)      | <----------------------------------  |  (AI Engine)          |
+|                        |      (Streaming SSE)      |                         |      (Streaming Response)            |                       |
++------------------------+                           +-----------+-------------+                                      +-----------+-----------+
+                                                                  |                                                              |
+                                                                  | (SQL Queries)                                                | (Vector Search/CRUD)
+                                                                  v                                                              v
+                                                      +-----------+-------------+                                      +-----------+-----------+
+                                                      |                         |                                      |                       |
+                                                      |   PostgreSQL Database   |                                      |   Qdrant Vector DB    |
+                                                      |   (System of Record)    |                                      |   (AI Knowledge Base) |
+                                                      +-------------------------+                                      +-----------------------+
 
-### **2.2. Database Management (PostgreSQL)**
+```
+### **Frontend (React Native App)**
 
-* Manages all data persistence according to the finalized DDL, including:  
-  * repy\_user\_l and repy\_user\_pref\_l  
-  * repy\_schedule\_l and repy\_routine\_l  
-  * repy\_exercise\_record\_l (workout history)  
-  * repy\_chat\_message\_l  
-  * repy\_feedback\_l (the permanent log of all user feedback)
+The frontend is the user's entire world. It handles the user interface for onboarding, the AI chat, workout execution, and profile management. It communicates securely with the Express backend.
 
-### **2.3. Key API Endpoints**
+### **Backend (Express API Server)**
 
-* **/users:** CRUD operations for user profiles and settings.  
-* **/auth:** Endpoints for login, logout, and token refresh.  
-* **/routines:** Endpoints to create, read, and update workout routines and logs in PostgreSQL.  
-* **/feedback (Structured):** An endpoint that receives structured feedback from the app, saves it to PostgreSQL, and then calls the corresponding FastAPI endpoint to update Qdrant.  
-* **/ai/chat (Proxy):** A secure endpoint that:  
-  1. Receives a chat request from the user.  
-  2. Fetches the user's profile and recent performance history from PostgreSQL.  
-  3. Aggregates this data into a single payload (ReppyRequest).  
-  4. Forwards this payload to the FastAPI server's /chat endpoint.  
-  5. Streams the AI's response back to the client.
+The Express server is the central gateway and the "System of Record." It manages all user authentication, profile data, and workout history in the **PostgreSQL** database. It acts as a secure proxy, gathering the necessary data before making requests to the AI engine.
 
-## **3\. AI Engine (FastAPI Server)**
+### **AI Engine (FastAPI Server)**
 
-The FastAPI server is a specialized, private microservice. Its sole purpose is to handle all AI-related tasks and manage the vector database. It does not interact with the PostgreSQL database directly.
-
-### **3.1. Core Responsibilities**
-
-* **AI Logic Execution:** Contains all LangChain chains and RAG logic.  
-* **Vector DB Owner (Qdrant):** It is the only component authorized to perform CRUD operations on the Qdrant vector database.  
-* **Embedding Generation:** Manages the generation of vector embeddings using OpenAI's models.
-
-### **3.2. Vector DB Management (Qdrant)**
-
-* **exercise\_knowledge Collection:** Stores vector embeddings of all exercises, used for semantic search during routine generation.  
-* **routine\_feedback\_log Collection:** Stores user feedback data to allow the RAG engine to retrieve context on user sentiment.
-
-### **3.3. Key API Endpoints**
-
-* **/chat:** The main RAG endpoint.  
-  * **Receives** a ReppyRequest from the Express server.  
-  * **Routes** the user's intent (e.g., routine\_generation, coaching, feedback\_expression).  
-  * **Retrieves** relevant exercise candidates and user feedback from Qdrant.  
-  * **Augments** a prompt with the retrieved context.  
-  * **Generates** a response, using Pydantic tools to create structured output (like WeeklyRoutine) when necessary.  
-  * **Streams** the response back to the Express server.  
-* **/feedback:** An internal endpoint for Express to call.  
-  * Receives structured feedback data.  
-  * Upserts the data into the routine\_feedback\_log collection in Qdrant.  
-* **/admin/exercises:** A set of secure, key-protected endpoints for admin use.  
-  * Allows creating, updating, or deleting exercises in the exercise\_knowledge collection.  
-  * When creating an exercise, it uses an OpenAI embedding model to generate a vector from the exercise's name and description before saving it to Qdrant.
+The FastAPI server is the brain. It is a specialized microservice that handles all complex AI tasks. It manages the **Qdrant** vector database, which stores exercise knowledge and user feedback. This server performs the Retrieval-Augmented Generation (RAG) to understand user requests, retrieve relevant context, and generate intelligent, personalized responses and workout plans.
